@@ -52,17 +52,28 @@ with sync_playwright() as p:
 
     browser.close()
 
-parser = Parser(html)
-output = output + parser.parse()
-
 with open("dist/actress.yaml", "w", encoding="utf-8") as f:
     data = list(
         map(
-            lambda item: {"name": item[0], "name_kana": item[1], "pic": item[3]}, output
+            lambda item: (
+                {
+                    "name": item[0],
+                    "name_kana": item[1],
+                    "pic": item[3],
+                    "aliases": item[4],
+                }
+                if len(item) > 4
+                else {"name": item[0], "name_kana": item[1], "pic": item[3]}
+            ),
+            output,
         )
     )
     yaml.safe_dump(
-        {"AV女優一覧": data}, f, allow_unicode=True, default_flow_style=False
+        {"AV女優一覧": data},
+        f,
+        allow_unicode=True,
+        default_flow_style=False,
+        sort_keys=False,
     )
 
 print("done!")
