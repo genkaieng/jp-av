@@ -49,6 +49,7 @@ class Parser:
         ):
             name, name_kana, video_count = list(li.find_all(string=True))
             pic = li.find("img")["src"]
+            link = li.find("a")["href"]
 
             name_result = re.search(regexp, name)
             alias_list = list()
@@ -58,9 +59,7 @@ class Parser:
             name = re.sub(regexp, "", name)
             name_kana = re.sub(regexp, "", name_kana)
 
-            row = [name, name_kana, video_count, pic]
-            if len(alias_list) > 0:
-                row = row + [alias_list]
+            row = [name, name_kana, video_count, pic, [link], alias_list]
 
             out = out + [row]
 

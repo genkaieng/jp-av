@@ -55,16 +55,15 @@ with sync_playwright() as p:
 with open("dist/actress.yaml", "w", encoding="utf-8") as f:
     data = list(
         map(
-            lambda item: (
-                {
-                    "name": item[0],
-                    "name_kana": item[1],
-                    "pic": item[3],
-                    "aliases": item[4],
-                }
-                if len(item) > 4
-                else {"name": item[0], "name_kana": item[1], "pic": item[3]}
-            ),
+            lambda item: {
+                "name": item[0],
+                "name_kana": item[1],
+                "details": (
+                    {"alias_names": item[5], "pic": item[3], "links": item[4]}
+                    if len(item[5]) > 0
+                    else {"pic": item[3], "links": item[4]}
+                ),
+            },
             output,
         )
     )
