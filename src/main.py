@@ -59,9 +59,14 @@ with open("dist/actress.yaml", "w", encoding="utf-8") as f:
                 "name": item[0],
                 "name_kana": item[1],
                 "details": (
-                    {"alias_names": item[5], "pic": item[3], "links": item[4]}
+                    {
+                        "alias_names": item[5],
+                        "works": {"count": item[2]},
+                        "pic": item[3],
+                        "links": item[4],
+                    }
                     if len(item[5]) > 0
-                    else {"pic": item[3], "links": item[4]}
+                    else {"works": {"count": item[2]}, "pic": item[3], "links": item[4]}
                 ),
             },
             output,

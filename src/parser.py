@@ -2,7 +2,8 @@ from bs4 import BeautifulSoup
 import re
 
 regexp = "（[^）]*）"
-sep = "、"
+names_sep = "、"
+works_sep = "："
 
 
 class Parser:
@@ -47,19 +48,20 @@ class Parser:
         for li in soup.find("ul", attrs={"data-e2eid": "list-actress-root"}).find_all(
             "li"
         ):
-            name, name_kana, video_count = list(li.find_all(string=True))
+            name, name_kana, works = list(li.find_all(string=True))
             pic = li.find("img")["src"]
             link = li.find("a")["href"]
+            works_count = int(works.split(works_sep)[1].replace(",", ""))
 
             name_result = re.search(regexp, name)
             alias_list = list()
             if name_result:
-                alias_list = alias_list + name_result.group()[1:-1].split(sep)
+                alias_list = alias_list + name_result.group()[1:-1].split(names_sep)
 
             name = re.sub(regexp, "", name)
             name_kana = re.sub(regexp, "", name_kana)
 
-            row = [name, name_kana, video_count, pic, [link], alias_list]
+            row = [name, name_kana, works_count, pic, [link], alias_list]
 
             out = out + [row]
 
